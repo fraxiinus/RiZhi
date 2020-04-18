@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Etirps</Authors>
+    <Company>Etirps</Company>
+    <Description>A super simply log library, made for ReplayBook</Description>
+  </PropertyGroup>
+
+</Project>
