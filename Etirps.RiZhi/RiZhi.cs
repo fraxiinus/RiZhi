@@ -1,8 +1,11 @@
 ﻿using Etirps.RiZhi.Models;
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace Etirps.RiZhi
@@ -23,16 +26,35 @@ namespace Etirps.RiZhi
 
         public void WriteLog()
         {
-            string outputFileName = Path.Combine(OutputDirectory, $"{FilePrefix}_{ DateTime.Now.ToString("yyyyMMdd_HHmm", CultureInfo.InvariantCulture)}.log");
-            string logOutput = "";
+            var outputFileName = Path.Combine(OutputDirectory, $"{FilePrefix}_{ DateTime.Now.ToString("yyyyMMdd_HHmm", CultureInfo.InvariantCulture)}.log");
+            var logOutput = "";
+
+            var frames = new StackTrace().GetFrames();
+            var initialAssembly = frames.Select(x => x.GetMethod().ReflectedType.Assembly).Distinct().Last().GetName();
+            var version = initialAssembly.Version.ToString(2);
+            var assemblyName = initialAssembly.Name;
+
+            logOutput += $"Log file created by RiZhi for {assemblyName} v{version}\n";
 
             foreach (var entry in _entryList)
             {
                 if (entry == null) { continue; }
-                logOutput += $"{entry.Level} | {entry.Timestamp} | {entry.CallingFile}->{entry.CallingMethod}->{entry.CallingLine} | {entry.Message}\n";
+                logOutput += ConstructLine(entry);
+            }
+
+            if (!Directory.Exists(OutputDirectory))
+            {
+                Directory.CreateDirectory(OutputDirectory);
             }
 
             File.WriteAllText(outputFileName, logOutput);
+        }
+
+        private string ConstructLine(Entry entry)
+        {
+            var trace = $"{entry.CallingFile} -> {entry.CallingMethod}() -> {entry.CallingLine}";
+            var level = string.Format("{0,-5} | {1,-22} | {2} | {3}", entry.Level, entry.Timestamp, trace, entry.Message) + "\n";
+            return level;
         }
 
         public void Debug(string message,
