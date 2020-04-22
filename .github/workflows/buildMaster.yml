@@ -20,10 +20,7 @@ jobs:
         NUGET_AUTH_TOKEN: ${{ secrets.NUGET_KEY }}
 
     - name: Build and pack
-      run: dotnet build "Etirps.RiZhi/Etirps.RiZhi.csproj" -c Release -o out
-
-    - name: what
-      run: dir out
+      run: dotnet build -c Release -o out
 
     - name: Push package to NuGet registry
-      run: dotnet nuget push out/*.nupkg --skip-duplicate --no-symbols true
+      run: dotnet nuget push ./out/*.nupkg --skip-duplicate --no-symbols true
