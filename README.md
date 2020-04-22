@@ -3,6 +3,22 @@
 
 ![Build](https://img.shields.io/github/workflow/status/leeanchu/RiZhi/master?style=flat-square) ![NuGet](https://img.shields.io/nuget/v/Etirps.Rizhi?style=flat-square)
 
+## Installation
+
+**With Visual Studio**
+
+Navigate to: 
+
+Tools -> NuGet Package Manager -> Manage NuGet Packages for Solution
+
+Select "Browse" and search for "Etirps.RiZhi"
+
+
+**With NuGet Console**
+````ps
+Install-Package Etirps.RiZhi
+````
+
 ## Example
 
 ````C#
