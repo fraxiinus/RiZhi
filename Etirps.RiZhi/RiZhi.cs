@@ -17,11 +17,17 @@ namespace Etirps.RiZhi
         public bool ErrorFlag { get; private set; } = false;
         public string OutputDirectory { get; set; } = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
         public string FilePrefix { get; set; } = "ScribeLog";
-
+        public string AssemblyName { get; set; }
+        public string AssemblyVersion { get; set; }
 
         public RiZhi()
         {
             _entryList = new ConcurrentQueue<Entry>();
+
+            var frames = new StackTrace().GetFrames();
+            var initialAssembly = frames.Select(x => x.GetMethod().ReflectedType.Assembly).Distinct().Last().GetName();
+            AssemblyVersion = initialAssembly.Version.ToString(2);
+            AssemblyName = initialAssembly.Name;
         }
 
         public void WriteLog()
@@ -29,12 +35,7 @@ namespace Etirps.RiZhi
             var outputFileName = Path.Combine(OutputDirectory, $"{FilePrefix}_{ DateTime.Now.ToString("yyyyMMdd_HHmm", CultureInfo.InvariantCulture)}.log");
             var logOutput = "";
 
-            var frames = new StackTrace().GetFrames();
-            var initialAssembly = frames.Select(x => x.GetMethod().ReflectedType.Assembly).Distinct().Last().GetName();
-            var version = initialAssembly.Version.ToString(2);
-            var assemblyName = initialAssembly.Name;
-
-            logOutput += $"Log file created by RiZhi for {assemblyName} v{version}\n";
+            logOutput += $"Log file created by RiZhi for {AssemblyName} v{AssemblyVersion}\n";
 
             foreach (var entry in _entryList)
             {

@@ -8,7 +8,9 @@ namespace Etirps.RiZhi.ExampleApp
         {
             var log = new RiZhi
             {
-                FilePrefix = "ExampleApp"
+                FilePrefix = "ExampleApp",
+                AssemblyVersion = "1.0.0",
+                AssemblyName = "Example Program"
             };
 
             log.Debug("Debug message, appears first");
