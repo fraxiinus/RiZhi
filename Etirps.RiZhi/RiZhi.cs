@@ -16,7 +16,7 @@ namespace Etirps.RiZhi
 
         public bool ErrorFlag { get; private set; } = false;
         public string OutputDirectory { get; set; } = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
-        public string FilePrefix { get; set; } = "ScribeLog";
+        public string FilePrefix { get; set; } = "RiZhiLog";
         public string AssemblyName { get; set; }
         public string AssemblyVersion { get; set; }
 
@@ -54,7 +54,7 @@ namespace Etirps.RiZhi
         private string ConstructLine(Entry entry)
         {
             var trace = $"{entry.CallingFile} -> {entry.CallingMethod}() -> {entry.CallingLine}";
-            var level = string.Format("{0,-5} | {1,-22} | {2} | {3}", entry.Level, entry.Timestamp, trace, entry.Message) + "\n";
+            var level = string.Format("{0,-5} | {1,-22} | {2} | {3}", entry.Level, entry.Timestamp.ToString("s"), trace, entry.Message) + "\n";
             return level;
         }
 
